@@ -1,0 +1,33 @@
+name: market_place
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  bloc: ^8.1.2
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.6
+  gap: ^3.0.0
+  google_fonts: ^4.0.5
+  hooks_riverpod: ^2.1.1
+  intl: ^0.18.0
+  page_transition: ^2.0.9
+
+dev_dependencies:
+  bloc_test: ^9.1.2
+  flutter_test:
+    sdk: flutter
+  mocktail: ^0.3.0
+  flutter_lints: any
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+  - assets/images/svg/
+  - assets/images/png/
