@@ -69,7 +69,7 @@ class ProductItemCard extends StatelessWidget {
                         ),
                         fontWeight: FontWeight.w500),
               ),
-              SizedBox(height: context.screenHeight(.0075)),
+              const Gap(10),
               const Text(
                 "Essentials Men's Long-Sleeve Crewneck T-Shirt",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
@@ -80,8 +80,9 @@ class ProductItemCard extends StatelessWidget {
                   SvgPicture.asset(
                     "star".svg,
                     // TODO: star color
-                    color: const Color(
-                      0xffEA9A3B,
+                    colorFilter: const ColorFilter.mode(
+                      Color(0xffEA9A3B),
+                      BlendMode.src,
                     ),
                     width: context.screenWidth(.03),
                   ),

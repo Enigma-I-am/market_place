@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:market_place/core/provider.dart';
 import 'package:market_place/main_page/view/widgets/bottom_fixed_widget.dart';
@@ -33,7 +35,7 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
   @override
   Widget build(BuildContext context) {
     final hoodieShots =
-        ref.watch(mainPageVM.select((value) => value.hoodieViews));
+        ref.watch(mainPageVM.select((it) => it.hoodieViews));
     return Scaffold(
       backgroundColor: const Color(0xffFCFCFD),
       appBar: AppBar(
@@ -71,8 +73,9 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                     height: context.screenHeight(.4),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        color: const Color(0xffEEEEEF),
-                        borderRadius: BorderRadius.circular(10),),
+                      color: const Color(0xffEEEEEF),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: Image.network(
                       "https://firebasestorage.googleapis.com/v0/b/flutterxfirestore.appspot.com/o/hoodie-removebg-preview.png?alt=media&token=40af9516-97af-4ef3-9b20-9a0c0e01a4b4",
                       fit: BoxFit.contain,
@@ -106,56 +109,55 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                   ),
                 ],
               ),
-              SizedBox(
-                height: context.screenHeight(.03),
-              ),
-              Text(
+              const Gap(10),
+              const Text(
                 "Essentials Men's Long-Sleeve Crewneck T-Shirt",
-                style: TextStyle(
-                    fontSize: context.screenWidth(.055),
-                    fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),
-              SizedBox(height: context.screenHeight(.03)),
+              const Gap(20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      // Image.asset(
-                      //   ImageUtil.star,
-                      //   color: AppColors.starRatingColor,
-                      //   width: context.screenWidth(.05),
-                      // ),
-                      Text(
-                        "   4.9 Ratings",
-                        style: TextStyle(
-                            fontSize: context.screenWidth(.04),
-                            color: const Color(0xff868992)),
+                      SvgPicture.asset(
+                        "star".svg,
+                        colorFilter: const ColorFilter.mode( Color(0xffEA9A3B), BlendMode.srcIn),
+                        width: context.screenWidth(.05),
+                      ),
+                      const Text(
+                        " 4.9 Ratings",
+                        style:
+                            TextStyle(fontSize: 16, color: Color(0xff868992)),
                       ),
                     ],
                   ),
                   const BulletWidget(),
-                  Text(
+                  const Text(
                     "2.3k+ Reviews",
                     style: TextStyle(
-                      fontSize: context.screenWidth(.04),
-                      color: const Color(0xff868992),
+                      fontSize: 16,
+                      color: Color(0xff868992),
                     ),
                   ),
                   const BulletWidget(),
-                  Text(
+                  const Text(
                     "2.9k+ Sold",
                     style: TextStyle(
-                      fontSize: context.screenWidth(.04),
-                      color: const Color(0xff868992),
+                      fontSize: 16,
+                      color: Color(0xff868992),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: context.screenHeight(.03)),
+              const Gap(20),
               TabBar(
+                padding: EdgeInsets.zero,
+                indicatorPadding: const EdgeInsets.only(right: 8),
+                labelPadding: const EdgeInsets.only(right: 24),
                 controller: _controller,
+                isScrollable: true,
                 tabs: const [
                   Tab(
                     text: "About Item",
@@ -164,21 +166,17 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                     text: "Reviews",
                   )
                 ],
+                indicatorSize: TabBarIndicatorSize.tab,
                 indicatorColor: const Color(0xff4AB299),
-                labelStyle: TextStyle(
-                    color: const Color(0xff4AB299),
-                    fontFamily: "Ysabeau",
-                    fontWeight: FontWeight.w700,
-                    fontSize: context.screenWidth(.05)),
-                unselectedLabelStyle: TextStyle(
-                    color: const Color(0xff4AB299),
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Ysabeau",
-                    fontSize: context.screenWidth(.05)),
+                labelStyle: const TextStyle(
+                  color: Color(0xff4AB299),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                ),
                 labelColor: const Color(0xff4AB299),
                 unselectedLabelColor: const Color(0xff4AB299),
               ),
-              SizedBox(height: context.screenHeight(.02)),
+              const Gap(14),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -218,50 +216,34 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                   ),
                 ],
               ),
-              SizedBox(
-                height: context.screenHeight(.07),
-                child: const Divider(
-                  color: Color(0xff4AB299),
-                ),
-              ),
-              Text(
+              const MarketplaceDivider(),
+              const Text(
                 "Description: ",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: context.screenWidth(.055)),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
               ),
-              SizedBox(height: context.screenHeight(.01)),
+              const Gap(10),
               const DescriptionTexts(
-                text:
-                    "Long-sleeve dress shirt in classicfit featuring button-down collar",
-              ),
-              const DescriptionTexts(text: "Patch Pocket on Left Chest"),
-              const DescriptionTexts(text: "Durable Combination Cotton Fabric"),
+                  "Long-sleeve dress shirt in classicfit featuring\n   button-down collar"),
+              const DescriptionTexts("Patch Pocket on Left Chest"),
+              const DescriptionTexts("Durable Combination Cotton Fabric"),
+              const DescriptionTexts("Comfortable and quality dress shirt"),
               const DescriptionTexts(
-                  text: "Comfortable and quality dress shirt"),
-              const DescriptionTexts(
-                  text: "Go to Classic button down shirt for all occasions"),
-              SizedBox(height: context.screenHeight(.03)),
-              Text(
+                  "Go to Classic button down shirt for all\n   occasions"),
+              const Gap(20),
+              const Text(
                 "Chat us if there is anything you want to ask about the product.",
                 style: TextStyle(
-                    color: const Color(0xff4AB299),
-                    fontWeight: FontWeight.w500,
-                    fontSize: context.screenWidth(.04)),
-              ),
-              SizedBox(
-                height: context.screenHeight(.07),
-                child: const Divider(
                   color: Color(0xff4AB299),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
                 ),
               ),
-              Text(
+              const MarketplaceDivider(),
+              const Text(
                 "Shipping Information: ",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: context.screenWidth(.055)),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
               ),
-              SizedBox(height: context.screenHeight(.01)),
+              const Gap(10),
               const TextRow(
                   title: "Delivery", value: "Shipping from Jakarta, Indonesia"),
               const TextRow(
@@ -269,32 +251,27 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
               const TextRow(
                   title: "Arrival",
                   value: "Estimated arrival on 25 -27 Oct 2022"),
-              SizedBox(
-                height: context.screenHeight(.07),
-                child: const Divider(
-                  color: Color(0xff868992),
-                ),
-              ),
-              Row(
+              const MarketplaceDivider(),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Recommendation",
                     style: TextStyle(
-                        fontSize: context.screenWidth(.055),
-                        color: const Color(0xff2A2D40),
+                        fontSize: 20,
+                        color: Color(0xff2A2D40),
                         fontWeight: FontWeight.w700),
                   ),
                   Text(
                     "See more",
                     style: TextStyle(
-                        fontSize: context.screenWidth(.04),
-                        color: const Color(0xff4AB299),
+                        fontSize: 16,
+                        color: Color(0xff4AB299),
                         fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
-              SizedBox(height: context.screenHeight(.015)),
+              const Gap(20),
               GridView.builder(
                 itemCount: 20,
                 physics: const BouncingScrollPhysics(),
@@ -325,6 +302,20 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
   }
 }
 
+class MarketplaceDivider extends StatelessWidget {
+  const MarketplaceDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: Divider(
+        color: Colors.grey.withOpacity(0.5),
+      ),
+    );
+  }
+}
+
 class TextRow extends StatelessWidget {
   final String title;
   final String value;
@@ -339,16 +330,18 @@ class TextRow extends StatelessWidget {
         children: [
           Text(
             "$title:",
-            style: TextStyle(
-                color: const Color(0xff4AB299),
-                fontWeight: FontWeight.w500,
-                fontSize: context.screenWidth(.037)),
+            style: const TextStyle(
+              color: Color(0xff4AB299),
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
           ),
           Text(
             "   $value",
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: context.screenWidth(.04)),
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
           )
         ],
       ),
@@ -359,7 +352,7 @@ class TextRow extends StatelessWidget {
 class DescriptionTexts extends StatelessWidget {
   final String text;
 
-  const DescriptionTexts({super.key, required this.text});
+  const DescriptionTexts(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -368,16 +361,16 @@ class DescriptionTexts extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: context.screenWidth(.03)),
-          const BulletWidget(),
-          SizedBox(width: context.screenWidth(.03)),
+          // SizedBox(width: context.screenWidth(.03)),
+          // const BulletWidget(),
+          // SizedBox(width: context.screenWidth(.03)),
           Expanded(
             child: Text(
-              text,
-              style: TextStyle(
-                  color: const Color(0xff4AB299),
+              "• $text",
+              style: const TextStyle(
+                  color: Color(0xff4AB299),
                   fontWeight: FontWeight.w500,
-                  fontSize: context.screenWidth(.038)),
+                  fontSize: 16),
             ),
           ),
         ],

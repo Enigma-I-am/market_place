@@ -25,7 +25,9 @@ class AnimatedListItem extends StatelessWidget {
         horizontalOffset: directionsVertical ? null : 100.0,
         child: FadeInAnimation(
           curve: Curves.easeIn,
-          delay: Duration(milliseconds: animationDuration.inMilliseconds ~/ 3),
+          delay: Duration(
+            milliseconds: animationDuration.inMilliseconds ~/ 3,
+          ),
           duration: animationDuration,
           child: child,
         ),

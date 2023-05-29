@@ -10,7 +10,8 @@ import 'package:market_place/core/provider.dart';
 import 'package:market_place/main_page/view/detail_screen.dart';
 import 'package:market_place/main_page/view/widgets/app_bar_content.dart';
 import 'package:market_place/main_page/view/widgets/product_item_card.dart';
-import 'package:market_place/utils/constants.dart';
+import 'package:market_place/main_page/view/widgets/quick_actions.dart';
+import 'package:market_place/main_page/view/widgets/search_field.dart';
 import 'package:market_place/utils/extensions.dart';
 import 'package:market_place/widgets/touchable_opacity.dart';
 
@@ -90,9 +91,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final headerList = ref.watch(mainPageVM.select((value) => value.headers));
+    final headerList = ref.watch(mainPageVM.select((it) => it.headers));
     final currentOptions =
-        ref.watch(mainPageVM.select((value) => value.currentOption));
+        ref.watch(mainPageVM.select((it) => it.currentOption));
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -110,49 +111,8 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  child: SizedBox(
-                    width: context.screenWidth(),
-                    height: context.screenHeight(.065),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(bottom: 3.0),
-                            child: SvgPicture.asset(
-                              'search-noun'.svg,
-                              width: 20,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 10.0),
-                          prefixIconConstraints: const BoxConstraints(
-                            minWidth: 50, // Adjust this value as needed
-                            minHeight: 10, // Adjust this value as needed
-                          ),
-                          hintText: " Search..",
-                          hintStyle: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              8,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                const Expanded(
+                  child: SearchField(),
                 ),
                 const Gap(10),
                 Padding(
@@ -198,59 +158,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: context.screenHeight(.09),
-                  child: PageView.builder(
-                    onPageChanged: (value) =>
-                        ref.read(mainPageVM).onOptionsChanged(value),
-                    itemCount: 3,
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: context.screenWidth(.06)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            "Layout",
-                            "Bell",
-                            "Ticket",
-                            "Globe",
-                            "Dollar"
-                          ]
-                              .map((e) => Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(
-                                            context.screenWidth(.025)),
-                                        decoration: BoxDecoration(
-                                            // TODO: this is grey light
-                                            color: const Color(0xffF6F6F6),
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: SvgPicture.asset(
-                                          e.toLowerCase().svg,
-                                          color: kBlack.withOpacity(.55),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: context.screenHeight(.01),
-                                      ),
-                                      Text(
-                                        e,
-                                        style: TextStyle(
-                                          fontSize: context.screenWidth(.036),
-                                          // TODO: this is grey
-                                          color: const Color(0xffBEBFC3),
-                                        ),
-                                      )
-                                    ],
-                                  ))
-                              .toList(),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
+                const QuickActions(),
                 const Gap(16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -269,25 +177,25 @@ class _HomePageState extends ConsumerState<HomePage> {
           delegate: _SliverAppBarDelegate(
             minHeight: context.screenHeight(.08),
             maxHeight: context.screenHeight(.08),
-            child: Column(
+            child: const Column(
               children: [
-                SizedBox(height: context.screenHeight(.03)),
+                Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Best Sale Product",
                       style: TextStyle(
-                        fontSize: context.screenWidth(.05),
-                        color: const Color(0xff2A2D40),
+                        fontSize: 20,
+                        color: Color(0xff2A2D40),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     Text(
                       "See more",
                       style: TextStyle(
-                        fontSize: context.screenWidth(.04),
-                        color: const Color(0xff4AB299),
+                        fontSize: 18,
+                        color: Color(0xff4AB299),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
