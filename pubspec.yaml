@@ -8,8 +8,10 @@ environment:
 
 dependencies:
   bloc: ^8.1.2
+  dartx: ^1.1.0
   flutter:
     sdk: flutter
+  flutter_staggered_animations: ^1.1.1
   flutter_svg: ^2.0.6
   gap: ^3.0.0
   google_fonts: ^4.0.5

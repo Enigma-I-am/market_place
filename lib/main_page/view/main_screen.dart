@@ -19,7 +19,9 @@ class _MainPageState extends ConsumerState<MainScreen> {
 
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      backgroundColor: const Color(0xFFFBFBFB),
+      backgroundColor: const Color(
+        0xFFFBFBFB,
+      ),
       body: IndexedStack(
         index: currentTab,
         children: pages,

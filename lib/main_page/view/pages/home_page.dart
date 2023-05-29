@@ -1,12 +1,18 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:market_place/core/navigator.dart';
 import 'package:market_place/core/provider.dart';
+import 'package:market_place/main_page/view/detail_screen.dart';
+import 'package:market_place/main_page/view/widgets/app_bar_content.dart';
+import 'package:market_place/main_page/view/widgets/product_item_card.dart';
 import 'package:market_place/utils/constants.dart';
 import 'package:market_place/utils/extensions.dart';
+import 'package:market_place/widgets/touchable_opacity.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({super.key});
@@ -85,52 +91,89 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final headerList = ref.watch(mainPageVM.select((value) => value.headers));
+    final currentOptions =
+        ref.watch(mainPageVM.select((value) => value.currentOption));
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
         SliverAppBar(
+          toolbarHeight: 100,
           automaticallyImplyLeading: false,
           elevation: 0,
           centerTitle: false,
           pinned: true,
-          expandedHeight: 275,
+          expandedHeight: 300,
           backgroundColor:
               _isShrink ? const Color(0xFFFBFBFB) : const Color(0xFFE6E8E7),
-          title: Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  width: context.screenWidth(),
-                  height: context.screenHeight(.05),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 0,
+          title: Container(
+            margin: const EdgeInsets.only(top: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: context.screenWidth(),
+                    height: context.screenHeight(.065),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(bottom: 3.0),
+                            child: SvgPicture.asset(
+                              'search-noun'.svg,
+                              width: 20,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 10.0),
+                          prefixIconConstraints: const BoxConstraints(
+                            minWidth: 50, // Adjust this value as needed
+                            minHeight: 10, // Adjust this value as needed
+                          ),
+                          hintText: " Search..",
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              8,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        child: SvgPicture.asset('search'.svg),
-                      ),
-                      hintText: " Search..",
-                      hintStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 10),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const Gap(10),
-              SvgPicture.asset('ticket'.svg),
-              const Gap(10),
-              SvgPicture.asset('message'.svg),
-            ],
+                const Gap(10),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: SvgPicture.asset(
+                    'shopping-bag'.svg,
+                    width: 20,
+                    height: 25,
+                  ),
+                ),
+                const Gap(10),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: SvgPicture.asset(
+                    'message'.svg,
+                    width: 20,
+                    height: 25,
+                  ),
+                ),
+              ],
+            ),
           ),
           flexibleSpace: FlexibleSpaceBar(
             collapseMode: CollapseMode.parallax,
@@ -142,265 +185,183 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ref.read(mainPageVM).onHeaderChanged(value),
                 itemCount: headerList.length,
                 itemBuilder: (context, index) =>
-                    HeaderContent(headerList[index]),
+                    AppBarContent(headerList[index]),
               ),
             ),
           ),
           // leading: const Gap(1),
         ),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: context.screenHeight(.05),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => Text("data $index"),
+          child: Container(
+            color: const Color(0xFFFBFBFB),
+            height: context.screenHeight(.15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: context.screenHeight(.09),
+                  child: PageView.builder(
+                    onPageChanged: (value) =>
+                        ref.read(mainPageVM).onOptionsChanged(value),
+                    itemCount: 3,
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: context.screenWidth(.06)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            "Layout",
+                            "Bell",
+                            "Ticket",
+                            "Globe",
+                            "Dollar"
+                          ]
+                              .map((e) => Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(
+                                            context.screenWidth(.025)),
+                                        decoration: BoxDecoration(
+                                            // TODO: this is grey light
+                                            color: const Color(0xffF6F6F6),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: SvgPicture.asset(
+                                          e.toLowerCase().svg,
+                                          color: kBlack.withOpacity(.55),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: context.screenHeight(.01),
+                                      ),
+                                      Text(
+                                        e,
+                                        style: TextStyle(
+                                          fontSize: context.screenWidth(.036),
+                                          // TODO: this is grey
+                                          color: const Color(0xffBEBFC3),
+                                        ),
+                                      )
+                                    ],
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                const Gap(16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    3,
+                    (index) =>
+                        buildDot(index: index, currentPage: currentOptions),
+                  ),
+                )
+              ],
             ),
           ),
         ),
-        SliverAppBar(
-          floating: true,
+        SliverPersistentHeader(
           pinned: true,
-          title: FlexibleSpaceBar(
-              collapseMode: CollapseMode.parallax,
-              background: Container(
-                color: Colors.white,
-                padding:
-                    EdgeInsets.symmetric(horizontal: context.screenWidth(.06)),
-                child: Column(
+          delegate: _SliverAppBarDelegate(
+            minHeight: context.screenHeight(.08),
+            maxHeight: context.screenHeight(.08),
+            child: Column(
+              children: [
+                SizedBox(height: context.screenHeight(.03)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: context.screenHeight(.03)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Best Sale Product",
-                          style: TextStyle(
-                            fontSize: context.screenWidth(.05),
-                            color: const Color(0xff2A2D40),
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          "See more",
-                          style: TextStyle(
-                            fontSize: context.screenWidth(.04),
-                            color: const Color(0xff4AB299),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "Best Sale Product",
+                      style: TextStyle(
+                        fontSize: context.screenWidth(.05),
+                        color: const Color(0xff2A2D40),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      "See more",
+                      style: TextStyle(
+                        fontSize: context.screenWidth(.04),
+                        color: const Color(0xff4AB299),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
-              )),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: context.screenHeight(.9),
-            child: ListView.builder(
-              itemBuilder: (context, index) => Text("data $index"),
+              ],
             ),
           ),
+        ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: context.screenWidth(.06)),
+          sliver: SliverGrid.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: context.screenHeight(.3),
+                mainAxisSpacing: context.screenWidth(.04),
+                crossAxisSpacing: context.screenWidth(.04),
+              ),
+              itemCount: 20,
+              itemBuilder: (
+                context,
+                index,
+              ) {
+                final double randomRating =
+                    Random().nextDouble() * (5.0 - 4.5) + 4.5;
+                final int randomSales = Random().nextInt(5000 - 3000) + 3000;
+                final int randomPrice = Random().nextInt(50 - 10) + 10;
+
+                return TouchableOpacity(
+                  onTap: () => context.navigate(const ProductDetails()),
+                  child: ProductItemCard(
+                    randomRating: randomRating,
+                    randomSales: randomSales,
+                    index: index,
+                    randomPrice: randomPrice,
+                  ),
+                );
+              }),
         )
-        // SliverAppBar(
-        //   automaticallyImplyLeading: false,
-        //   elevation: 0,
-        //   expandedHeight: 0,
-        //   toolbarHeight: 0,
-        //   collapsedHeight: 0,
-        //   backgroundColor: const Color(0xFFFBFBFB),
-        //   flexibleSpace: FlexibleSpaceBar(
-        //     collapseMode: CollapseMode.parallax,
-        //     background: ListView(
-        //       padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 8),
-        //       scrollDirection: Axis.horizontal,
-        //       shrinkWrap: true,
-        //       children: [
-        //         ...List.generate(
-        //           10,
-        //           (index) => const Text("Menu titleeeeeee"),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        //   pinned: false,
-        // ),
       ],
     );
   }
 }
 
-class HeaderContent extends ConsumerWidget {
-  const HeaderContent(this.model, {super.key});
-
-  final HeaderModel model;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final headerList = ref.watch(mainPageVM.select((value) => value.headers));
-    final currentHeader =
-        ref.watch(mainPageVM.select((value) => value.currentHeader));
-    return Stack(children: [
-      Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: context.screenWidth(.06)),
-        height: context.screenHeight(.42),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: context.screenHeight(.17)),
-            Text(
-              model.hashTag,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: context.screenHeight(.005)),
-            Text(
-              model.discount,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
-            ),
-            SizedBox(height: context.screenHeight(.0075)),
-            Text(
-              model.subText,
-              style: const TextStyle(fontSize: 14),
-            ),
-            SizedBox(height: context.screenHeight(.023)),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  padding: EdgeInsets.symmetric(
-                      vertical: context.screenHeight(.015),
-                      horizontal: context.screenWidth(.04)),
-                  backgroundColor: const Color(0xff2A2D40)),
-              child: Text(
-                "Check this out",
-                style: TextStyle(fontSize: context.screenWidth(.035)),
-              ),
-            )
-          ],
-        ),
-      ),
-      Positioned(
-        right: context.screenWidth(.05),
-        bottom: context.screenHeight(.22),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            headerList.length,
-            (index) => buildDot(index: index, currentPage: currentHeader),
-          ),
-        ),
-      ),
-      Positioned(
-        right: -context.screenWidth(.2),
-        bottom: -context.screenHeight(.19),
-        child: Image.network(
-          model.imgUrl,
-          fit: BoxFit.cover,
-          height: context.screenHeight(.4),
-        ),
-      ),
-    ]);
-  }
-}
-
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
 
-  final Widget _tabBar;
+  final Widget child;
+  final double minHeight;
+  final double maxHeight;
 
   @override
-  double get minExtent => 52;
+  double get minExtent => minHeight;
   @override
-  double get maxExtent => 52;
+  double get maxExtent => max(maxHeight, minHeight);
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      // margin:const EdgeInsets.only(bottom: 8),
-      color: Colors.white,
-      child: _tabBar,
+      padding: EdgeInsets.symmetric(horizontal: context.screenWidth(.06)),
+      color: const Color(0xFFFBFBFB),
+      child: SizedBox.expand(child: child),
     );
   }
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
-
-AnimatedContainer buildDot({int index = 0, int currentPage = 0}) {
-  return AnimatedContainer(
-    duration: kAnimationDuration,
-    margin: const EdgeInsets.only(right: 5),
-    height: 4,
-    width: currentPage == index ? 16 : 6,
-    decoration: BoxDecoration(
-      color: currentPage == index
-          ? const Color(0xFF161828)
-          : const Color(0xFFD8D8D8),
-      borderRadius: BorderRadius.circular(3),
-    ),
-  );
-}
-
-class HeaderModel {
-  final String imgUrl, hashTag, discount, subText;
-
-  HeaderModel({
-    required this.imgUrl,
-    required this.hashTag,
-    required this.discount,
-    required this.subText,
-  });
-}
-
-class ProductHeader extends SliverPersistentHeaderDelegate {
-  @override
-  final double minExtent;
-  @override
-  final double maxExtent;
-
-  ProductHeader({required this.minExtent, required this.maxExtent});
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: context.screenWidth(.06)),
-      child: Column(
-        children: [
-          SizedBox(height: context.screenHeight(.03)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Best Sale Product",
-                style: TextStyle(
-                  fontSize: context.screenWidth(.05),
-                  color: const Color(0xff2A2D40),
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                "See more",
-                style: TextStyle(
-                  fontSize: context.screenWidth(.04),
-                  color: const Color(0xff4AB299),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
+    return maxExtent != oldDelegate.maxExtent ||
+        minExtent != oldDelegate.minExtent ||
+        child != oldDelegate.child;
   }
 }

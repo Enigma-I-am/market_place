@@ -14,9 +14,17 @@ class MainPageBottomNav extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentTab =
-        ref.watch(mainPageVM.select((value) => value.currentTab));
-    final pages = ref.watch(mainPageVM.select((value) => value.pages));
+    final currentTab = ref.watch(
+      mainPageVM.select(
+        (value) => value.currentTab,
+      ),
+    );
+    final pages = ref.watch(
+      mainPageVM.select(
+        (value) => value.pages,
+      ),
+    );
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -45,12 +53,11 @@ class MainPageBottomNav extends HookConsumerWidget {
                             children: [
                               Stack(
                                 children: [
-
-                                    SvgPicture.asset(
-                                      item.img.svg,
-                                      height: 20,
-                                      colorFilter: getTabColor(selected),
-                                    ),
+                                  SvgPicture.asset(
+                                    item.img.svg,
+                                    height: 20,
+                                    colorFilter: getTabColor(selected),
+                                  ),
                                   // if (item == pages.index(3))
                                 ],
                               ),
