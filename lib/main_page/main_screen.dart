@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:market_place/main_page/view/widgets/main_page_bottom_nav.dart';
 import 'package:market_place/core/provider.dart';
+import 'package:market_place/main_page/widgets/main_page_bottom_nav.dart';
 
 class MainScreen extends StatefulHookConsumerWidget {
   const MainScreen({super.key});

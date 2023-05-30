@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:market_place/core/navigator.dart';
-import 'package:market_place/main_page/counter.dart';
+import 'package:market_place/main_page/main_screen.dart';
+
 
 class App extends StatefulWidget {
   const App({super.key});

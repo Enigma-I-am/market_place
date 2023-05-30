@@ -82,7 +82,7 @@ class ProductItemCard extends StatelessWidget {
                     // TODO: star color
                     colorFilter: const ColorFilter.mode(
                       Color(0xffEA9A3B),
-                      BlendMode.src,
+                      BlendMode.srcATop,
                     ),
                     width: context.screenWidth(.03),
                   ),

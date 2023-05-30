@@ -65,8 +65,7 @@ class MainPageBottomNav extends HookConsumerWidget {
                               Text(
                                 item.name,
                                 style: TextStyle(
-                                  color:
-                                      selected ? kEdenGreen : kGreyQuaternary,
+                                  color: selected ? kGreen : kGreyQuaternary,
                                   fontSize: 11,
                                 ),
                               )
@@ -85,7 +84,7 @@ class MainPageBottomNav extends HookConsumerWidget {
   }
 
   ColorFilter getTabColor(bool isSelected) => ColorFilter.mode(
-        isSelected ? kEdenGreen : kGreyQuaternary,
+        isSelected ? kGreen : kGreyQuaternary,
         BlendMode.srcIn,
       );
 }

@@ -1,15 +1,12 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:market_place/core/models/header_model.dart';
-import 'package:market_place/core/navigator.dart';
 import 'package:market_place/core/view_model/disposable_vm.dart';
-import 'package:market_place/main_page/counter.dart';
-import 'package:market_place/main_page/view/pages/home_page.dart';
-import 'package:market_place/main_page/view/pages/voucher_page.dart';
-import 'package:market_place/main_page/view/pages/wallet_page.dart';
-import 'package:market_place/main_page/view/widgets/main_page_bottom_nav.dart';
+import 'package:market_place/main_page/pages/home_page.dart';
+import 'package:market_place/main_page/pages/voucher_page.dart';
+import 'package:market_place/main_page/pages/wallet_page.dart';
+import 'package:market_place/main_page/widgets/main_page_bottom_nav.dart';
+
 
 class MainPageVM extends DisposableViewModel {
   MainPageVM(super.read);
@@ -116,25 +113,4 @@ class MainPageVM extends DisposableViewModel {
     notifyListeners();
   }
 
-  /// Load Splash screen with persistent login logic
-  void handleLoadSplash(BuildContext context) async {
-    await Future.delayed(const Duration(milliseconds: 1800));
-
-    /// Go to Home Page
-    context.navigate(const MainScreen());
-  }
-
-  /// System overlay style
-  SystemUiOverlayStyle get style => SystemUiOverlayStyle(
-        /* set Status bar color in Android devices. */
-        statusBarColor: Colors.transparent,
-        systemNavigationBarDividerColor: Colors.transparent,
-        /* set Status bar icons color in Android devices.*/
-        statusBarIconBrightness:
-            (Platform.isIOS ? Brightness.light : Brightness.dark),
-        /* set Status bar icon color in iOS. */
-        statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-      );
 }

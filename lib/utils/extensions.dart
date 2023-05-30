@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:market_place/main_page/view/widgets/animated_list.dart';
+import 'package:market_place/main_page/widgets/animated_list.dart';
 import 'package:market_place/utils/constants.dart';
 import 'package:dartx/dartx.dart';
 

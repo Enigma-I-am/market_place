@@ -7,11 +7,11 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:market_place/core/navigator.dart';
 import 'package:market_place/core/provider.dart';
-import 'package:market_place/main_page/view/detail_screen.dart';
-import 'package:market_place/main_page/view/widgets/app_bar_content.dart';
-import 'package:market_place/main_page/view/widgets/product_item_card.dart';
-import 'package:market_place/main_page/view/widgets/quick_actions.dart';
-import 'package:market_place/main_page/view/widgets/search_field.dart';
+import 'package:market_place/main_page/detail_screen.dart';
+import 'package:market_place/main_page/widgets/app_bar_content.dart';
+import 'package:market_place/main_page/widgets/product_item_card.dart';
+import 'package:market_place/main_page/widgets/quick_actions.dart';
+import 'package:market_place/main_page/widgets/search_field.dart';
 import 'package:market_place/utils/extensions.dart';
 import 'package:market_place/widgets/touchable_opacity.dart';
 

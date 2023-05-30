@@ -5,8 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:market_place/core/provider.dart';
-import 'package:market_place/main_page/view/widgets/bottom_fixed_widget.dart';
-import 'package:market_place/main_page/view/widgets/product_item_card.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:market_place/main_page/widgets/bottom_fixed_widget.dart';
+import 'package:market_place/main_page/widgets/product_item_card.dart';
+import 'package:market_place/utils/constants.dart';
 import 'package:market_place/utils/extensions.dart';
 
 class ProductDetails extends StatefulHookConsumerWidget {
@@ -34,8 +36,7 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
 
   @override
   Widget build(BuildContext context) {
-    final hoodieShots =
-        ref.watch(mainPageVM.select((it) => it.hoodieViews));
+    final hoodieShots = ref.watch(mainPageVM.select((it) => it.hoodieViews));
     return Scaffold(
       backgroundColor: const Color(0xffFCFCFD),
       appBar: AppBar(
@@ -50,14 +51,14 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
             color: Color(0xff2A2D40),
           ),
         ),
-        // actions: [
-        // const IconWidget(name: ImageUtil.heartFill),
-        // SizedBox(width: context.width(.07)),
-        // const IconWidget(name: ImageUtil.share),
-        // SizedBox(width: context.width(.07)),
-        // const IconWidget(name: ImageUtil.purse),
-        // SizedBox(width: context.width(.07)),
-        // ],
+        actions: [
+          SvgPicture.asset('share'.svg),
+          const Gap(10),
+          SvgPicture.asset('heart'.svg),
+          const Gap(10),
+          SvgPicture.asset('shopping-bag'.svg),
+          const Gap(10),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -115,34 +116,33 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),
               const Gap(20),
-              Row(
+              const Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      SvgPicture.asset(
-                        "star".svg,
-                        colorFilter: const ColorFilter.mode( Color(0xffEA9A3B), BlendMode.srcIn),
-                        width: context.screenWidth(.05),
+                      Icon(
+                        Icons.star,
+                        color: Color(0xffEA9A3B),
                       ),
-                      const Text(
+                      Text(
                         " 4.9 Ratings",
                         style:
                             TextStyle(fontSize: 16, color: Color(0xff868992)),
                       ),
                     ],
                   ),
-                  const BulletWidget(),
-                  const Text(
+                  BulletWidget(),
+                  Text(
                     "2.3k+ Reviews",
                     style: TextStyle(
                       fontSize: 16,
                       color: Color(0xff868992),
                     ),
                   ),
-                  const BulletWidget(),
-                  const Text(
+                  BulletWidget(),
+                  Text(
                     "2.9k+ Sold",
                     style: TextStyle(
                       fontSize: 16,
@@ -252,6 +252,132 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                   title: "Arrival",
                   value: "Estimated arrival on 25 -27 Oct 2022"),
               const MarketplaceDivider(),
+              const Text(
+                "Reviews & Rating",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff2A2D40),
+                    fontWeight: FontWeight.w700),
+              ),
+              const Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: '4.9 ',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '/5.0',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: kBlack.withOpacity(0.5),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      RatingBar.builder(
+                        unratedColor: const Color(0xff868992).withOpacity(0.5),
+                        itemSize: 18,
+                        initialRating: 4.5,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Color(0xffEA9A3B),
+                        ),
+                        onRatingUpdate: (rating) {},
+                      ),
+                      Gap(context.screenHeight(.055)),
+                      const Text(
+                        "2.3k+ Reviews",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff868992),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  const Column(
+                    children: [
+                      RatingWidget(
+                        starNumber: "5",
+                        numberOfRating: "1.5k",
+                        divisor: 4.5,
+                      ),
+                      RatingWidget(
+                        starNumber: "5",
+                        numberOfRating: "710",
+                        divisor: 3,
+                      ),
+                      RatingWidget(
+                        starNumber: "5",
+                        numberOfRating: "140",
+                        divisor: 1.5,
+                      ),
+                      RatingWidget(
+                        starNumber: "5",
+                        numberOfRating: "10",
+                        divisor: 0.5,
+                      ),
+                      RatingWidget(
+                        starNumber: "5",
+                        numberOfRating: "4",
+                        divisor: .1,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Gap(20),
+              const Text(
+                "Reviews with images & videos",
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff2A2D40),
+                    fontWeight: FontWeight.w700),
+              ),
+              const Gap(10),
+              SizedBox(
+                height: context.screenHeight(.1),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: hoodieShots.map(
+                    (it) {
+                      return Container(
+                        height: context.screenHeight(.1),
+                        width: context.screenWidth(.19),
+                        margin: const EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xffC4C4C5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            it,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
+              ),
+              const MarketplaceDivider(),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -287,10 +413,11 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
                   final int randomSales = Random().nextInt(5000 - 3000) + 3000;
                   final int randomPrice = Random().nextInt(50 - 10) + 10;
                   return ProductItemCard(
-                      randomRating: randomRating,
-                      randomSales: randomSales,
-                      randomPrice: randomPrice,
-                      index: index);
+                    randomRating: randomRating,
+                    randomSales: randomSales,
+                    randomPrice: randomPrice,
+                    index: index,
+                  );
                 },
               )
             ].animatedList(),
@@ -298,6 +425,83 @@ class _ProductDetailsState extends ConsumerState<ProductDetails>
         ),
       ),
       bottomNavigationBar: const BottomFixedWidget(),
+    );
+  }
+}
+
+class RatingWidget extends StatelessWidget {
+  const RatingWidget({
+    super.key,
+    required this.starNumber,
+    required this.numberOfRating,
+    required this.divisor,
+  });
+  final String starNumber, numberOfRating;
+  final double divisor;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: context.screenWidth(.55),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const Icon(
+            Icons.star,
+            color: Color(0xffEA9A3B),
+          ),
+          const Gap(5),
+          const Text(
+            "5",
+            style: TextStyle(
+              fontSize: 16,
+              color: Color(0xff868992),
+            ),
+          ),
+          const Gap(5),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Stack(
+              children: [
+                Center(
+                  child: Container(
+                    height: 10,
+                    width: context.screenWidth(.33),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color(0xff868992).withOpacity(0.2),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedContainer(
+                    height: 10,
+                    width: context.screenWidth(
+                      0.33 / (5 / divisor),
+                    ),
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.decelerate,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF53A18B),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Gap(10),
+          Text(
+            numberOfRating,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Color(0xff868992),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -361,9 +565,6 @@ class DescriptionTexts extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // SizedBox(width: context.screenWidth(.03)),
-          // const BulletWidget(),
-          // SizedBox(width: context.screenWidth(.03)),
           Expanded(
             child: Text(
               "• $text",
