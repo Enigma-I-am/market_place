@@ -15,7 +15,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   flutter_svg: ^2.0.6
   gap: ^3.0.0
-  google_fonts: ^4.0.5
+  google_fonts: ^5.0.0
   hooks_riverpod: ^2.1.1
   intl: ^0.18.0
   page_transition: ^2.0.9
